@@ -7,6 +7,10 @@ typedef enum {
     ND_MUL,
     ND_DIV,
     ND_NUM,
+    ND_EQ,
+    ND_NE,
+    ND_LT,
+    ND_LE,
 } NodeKind;
 
 typedef struct Node Node;
@@ -21,6 +25,9 @@ struct Node {
 Node* new_node(NodeKind kind, Node *lhs, Node *rhs);
 Node *new_node_num(int val);
 Node *expr();
+Node *equality();
+Node *relation();
+Node *add();
 Node *mul();
 Node *unary();
 Node *primary();

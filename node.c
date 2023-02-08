@@ -18,12 +18,60 @@ Node *new_node_num(int val) {
 /**
  * expression
  * expr:
- *  mul ("+" mul | "-" mul)*
- *
+ *  equality
  */
 Node *expr() {
-    Node *node = mul();
+    Node *node = equality();
+}
 
+/**
+ * equality-expression
+ * equality:
+ *  relation (("==" | "!=") relation)*
+ */
+Node *equality() {
+    Node *node = relation();
+    for (;;) {
+        if (token_consume("=="))
+            node = new_node(ND_EQ, node, relation());
+        else if (token_consume("!="))
+            node = new_node(ND_NE, node, relation());
+        else
+            return node;
+    }
+    return node;
+}
+
+/**
+ * relation-expression
+ * relation:
+ * !shift-expression (("<" | ">" | "<=" | ">=") shift-expression)*
+ */
+Node *relation() {
+    Node *node = add();
+    for (;;) {
+        if (token_consume("<"))
+            node = new_node(ND_LT, node, add());
+        else if (token_consume(">"))
+            node = new_node(ND_LT, add(), node);
+        else if (token_consume("<="))
+            node = new_node(ND_LE, node, add());
+        else if (token_consume(">="))
+            node = new_node(ND_LE, add(), node);
+        else
+            return node;
+    }
+    return node;
+}
+
+/**
+ * additive-expression
+ * add:
+ * !mul (("+" | "-") mul)*
+ *
+ */
+Node *add() {
+    Node *node = mul();
     for (;;) {
         if (token_consume("+"))
             node = new_node(ND_ADD, node, mul());
@@ -38,7 +86,7 @@ Node *expr() {
 /**
  * multiplicative-expression
  * mul:
- *  unary ("*" unary | "/" unary)*
+ *  unary (("*" | "/") unary)*
  *
  */
 Node *mul() {

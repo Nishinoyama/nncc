@@ -7,6 +7,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+bool start_with(char* p, char* q) {
+    return memcmp(p, q, strlen(q)) == 0;
+}
+
+bool is_alnum_or_under(char c) {
+    return isalnum(c) || c == '_';
+}
+
 
 bool token_consume(char *op) {
     if (token->kind == TK_RESERVED &&
@@ -56,7 +64,13 @@ Token *tokenize(char *p) {
             p++;
             continue;
         }
-        if (strchr("+-*/()", *p)) {
+        if (start_with(p, ">=") || start_with(p, "<=") ||
+            start_with(p, "==") || start_with(p, "!=")) {
+            cur = new_token(TK_RESERVED, cur, p, 2);
+            p += 2;
+            continue;
+        }
+        if (strchr("+-*/()<=>", *p)) {
             cur = new_token(TK_RESERVED, cur, p++, 1);
             continue;
         }
