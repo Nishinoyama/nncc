@@ -28,5 +28,5 @@ assert 14 "1 + 2 * 3 + 4 / 5 + 6 - 7 + 8"
 assert 10 "7 + 9 / (1 + 2)"
 assert 10 "2 * 9 - (7 + 1)"
 
-printf "\033[32m[[PRETEST PASSED]]\033[m\n"
+printf "\033[32m[[PRETESTS PASSED]]\033[m\n"
 
