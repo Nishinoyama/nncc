@@ -4,9 +4,9 @@ assert() {
     expected="$1"
     input="$2"
 
-    ./out/nncc "$input" > ./out/tmp.s
-    cc -o ./out/tmp ./out/tmp.s
-    ./out/tmp
+    ./nncc "$input" > ./tmp.s
+    cc -o ./tmp ./tmp.s
+    ./tmp
     actual="$?"
 
     if [ "$actual" = "$expected" ]; then
