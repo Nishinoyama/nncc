@@ -20,22 +20,7 @@ struct Node {
 
 Node* new_node(NodeKind kind, Node *lhs, Node *rhs);
 Node *new_node_num(int val);
-/**
- * expression
- * expr:
- *  mul ("+" mul | "-" mul)*
- */
 Node *expr();
-/**
- * multiplicative-expression
- * mul:
- *  primary ("*" primary | "/" primary)*
- */
 Node *mul();
-/**
- * multiplicative-expression
- * mul:
- *  num
- *  "(" expr ")"
- */
+Node *unary();
 Node *primary();
