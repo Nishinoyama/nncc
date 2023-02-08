@@ -1,2 +1,3 @@
-out/
-
+nncc
+*.o
+tmp*

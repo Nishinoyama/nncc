@@ -21,6 +21,9 @@ assert() {
 
 assert 0 0
 assert 42 42
+assert 13 "1+2+3+7"
+assert 12 "10 - 3 + 5"
+assert 5 "   1 - 2  + 3 - 4 + 5 - 6  +7 - 8 + 9  "
 
 printf "\033[32m[[PRETEST PASSED]]\033[m\n"
 
