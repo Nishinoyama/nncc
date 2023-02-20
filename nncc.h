@@ -5,4 +5,6 @@
 
 void panic(char *fmt, ...);
 
+int nncc(char *);
+
 #endif //NNCC_NNCC_H

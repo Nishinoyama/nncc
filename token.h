@@ -26,7 +26,7 @@ bool token_consume(char *op);
 
 void token_expect(char *op);
 
-bool token_ident_consume();
+Token *token_ident_consume();
 
 bool token_is_eof();
 

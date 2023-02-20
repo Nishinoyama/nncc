@@ -7,12 +7,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 void panic(char *fmt, ...) {
     va_list ap;
     va_start(ap, fmt);
     vfprintf(stderr, fmt, ap);
     fprintf(stderr, "\n");
+    assert(false);
     exit(1);
 }
 
@@ -101,13 +103,7 @@ void gen_code(Node *node) {
     printf("    push rax\n");
 }
 
-int main(int argc, char **argv) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s code\n", argv[0]);
-        return 1;
-    }
-
-    char *p = argv[1];
+int nncc(char *p) {
     token = tokenize(p);
     program();
 

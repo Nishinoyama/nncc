@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool start_with(char* p, char* q) {
+bool start_with(char *p, char *q) {
     return memcmp(p, q, strlen(q)) == 0;
 }
 
@@ -15,22 +15,27 @@ bool is_identifier_non_digit(char c) {
     return isalpha(c) || c == '_';
 }
 
+bool is_identifier(char c) {
+    return is_identifier_non_digit(c) || isdigit(c);
+}
+
 bool token_consume(char *op) {
     if (token->kind == TK_RESERVED &&
-            strlen(op) == token->len &&
-            memcmp(token->str, op, token->len) == 0) {
+        strlen(op) == token->len &&
+        memcmp(token->str, op, token->len) == 0) {
         token = token->next;
         return true;
     }
     return false;
 }
 
-bool token_ident_consume() {
+Token *token_ident_consume() {
     if (token->kind == TK_IDENTIFIER) {
+        Token *tok = token;
         token = token->next;
-        return true;
+        return tok;
     }
-    return false;
+    return NULL;
 }
 
 void token_expect(char *op) {
@@ -90,7 +95,10 @@ Token *tokenize(char *p) {
         }
         // one character identifier
         if (is_identifier_non_digit(*p)) {
-            cur = new_token(TK_IDENTIFIER, cur, p++, 1);
+            char *name = p;
+            int len = 1;
+            while (is_identifier(*++p)) len++;
+            cur = new_token(TK_IDENTIFIER, cur, name, len);
             continue;
         }
         panic("Failed to tokenize: %.7s...", p);

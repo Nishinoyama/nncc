@@ -44,6 +44,8 @@ assert 0 "4 <= 3;"
 assert 1 "5 * 4 > 2 * (3 + 4);"
 assert 20 "a = 4; b = 5; a * b;"
 assert 20 "a = 1; b = 3; c = a < b; d = c + 3; e = (d + 1) * 4;"
+assert 5 "f1 = 1; f2 = 1; f3 = f1 + f2; f4 = f2 + f3; f5 = f3 + f4;"
+assert 42 "people = 1; Answer_to_the_Ultimate_Question_of_Life_the_Universe_and_Everything = 11 * 2 * (people == people) + (10 * (1 + (people < 4)));"
 
 printf "\033[32m[[PRETESTS PASSED]]\033[m\n"
 

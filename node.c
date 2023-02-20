@@ -1,5 +1,6 @@
 #include "node.h"
 #include "nncc.h"
+#include "lvar.h"
 
 Node *codes[100];
 
@@ -164,11 +165,22 @@ Node *primary() {
         token_expect(")");
         return node;
     }
-    Token *ident_token = token;
-    if (token_ident_consume()) {
+    Token *ident_token = token_ident_consume();
+    if (ident_token) {
         Node *node = calloc(1, sizeof(Node));
         node->kind = ND_LVAR;
-        node->offset = (ident_token->str[0] - 'a' + 1) * 8;
+
+        LVar *lvar = lvar_find(ident_token);
+        if (!lvar) {
+            lvar = calloc(1, sizeof(LVar));
+            lvar->next = locals;
+            lvar->name = ident_token->str;
+            lvar->len = ident_token->len;
+            if (locals) lvar->offset = locals->offset + 8;
+            else lvar->offset = 8;
+            locals = lvar;
+        }
+        node->offset = lvar->offset;
         return node;
     }
     int val = token_number_expect();
