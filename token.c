@@ -11,15 +11,22 @@ bool start_with(char* p, char* q) {
     return memcmp(p, q, strlen(q)) == 0;
 }
 
-bool is_alnum_or_under(char c) {
-    return isalnum(c) || c == '_';
+bool is_identifier_non_digit(char c) {
+    return isalpha(c) || c == '_';
 }
-
 
 bool token_consume(char *op) {
     if (token->kind == TK_RESERVED &&
             strlen(op) == token->len &&
             memcmp(token->str, op, token->len) == 0) {
+        token = token->next;
+        return true;
+    }
+    return false;
+}
+
+bool token_ident_consume() {
+    if (token->kind == TK_IDENTIFIER) {
         token = token->next;
         return true;
     }
@@ -70,7 +77,7 @@ Token *tokenize(char *p) {
             p += 2;
             continue;
         }
-        if (strchr("+-*/()<=>", *p)) {
+        if (strchr("+-*/()<=>;", *p)) {
             cur = new_token(TK_RESERVED, cur, p++, 1);
             continue;
         }
@@ -79,6 +86,11 @@ Token *tokenize(char *p) {
             char *q = p;
             cur->val = strtol(p, &p, 10);
             cur->len = p - q;
+            continue;
+        }
+        // one character identifier
+        if (is_identifier_non_digit(*p)) {
+            cur = new_token(TK_IDENTIFIER, cur, p++, 1);
             continue;
         }
         panic("Failed to tokenize: %.7s...", p);

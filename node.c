@@ -1,4 +1,7 @@
 #include "node.h"
+#include "nncc.h"
+
+Node *codes[100];
 
 Node *new_node(NodeKind kind, Node *lhs, Node *rhs) {
     Node *node = calloc(1, sizeof(Node));
@@ -15,15 +18,43 @@ Node *new_node_num(int val) {
     return node;
 }
 
+void *program() {
+    int i = 0;
+    while (!token_is_eof()) {
+        codes[i++] = stmt();
+    }
+    codes[i] = NULL;
+}
+
+Node *stmt() {
+    Node *node = expr();
+    token_expect(";");
+    return node;
+}
+
 /**
  * expression
  * expr:
- *  equality
+ *  assign
  */
 Node *expr() {
-    Node *node = equality();
+    Node *node = assign();
     return node;
 }
+
+/**
+ * assignment-expression
+ * assign:
+ * !equality ("=" assign)?
+ */
+Node *assign() {
+    Node *node = equality();
+    if (token_consume("=")) {
+        node = new_node(ND_ASSIGN, node, assign());
+    }
+    return node;
+}
+
 
 /**
  * equality-expression
@@ -123,6 +154,7 @@ Node *unary() {
  * multiplicative-expression
  * mul:
  *  num
+ *  ident
  *  "(" expr ")"
  *
  */
@@ -130,6 +162,13 @@ Node *primary() {
     if (token_consume("(")) {
         Node *node = expr();
         token_expect(")");
+        return node;
+    }
+    Token *ident_token = token;
+    if (token_ident_consume()) {
+        Node *node = calloc(1, sizeof(Node));
+        node->kind = ND_LVAR;
+        node->offset = (ident_token->str[0] - 'a' + 1) * 8;
         return node;
     }
     int val = token_number_expect();
