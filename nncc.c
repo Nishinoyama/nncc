@@ -69,6 +69,8 @@ void gen_code(Node *node) {
             printf("    setle al\n");
             printf("    movzb rax, al\n");
             break;
+        default:
+            panic("Unimplemented node");
     }
     printf("    push rax\n");
 }
