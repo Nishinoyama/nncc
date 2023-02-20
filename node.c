@@ -1,6 +1,6 @@
 #include "node.h"
 
-Node* new_node(NodeKind kind, Node *lhs, Node *rhs) {
+Node *new_node(NodeKind kind, Node *lhs, Node *rhs) {
     Node *node = calloc(1, sizeof(Node));
     node->kind = kind;
     node->lhs = lhs;
@@ -22,6 +22,7 @@ Node *new_node_num(int val) {
  */
 Node *expr() {
     Node *node = equality();
+    return node;
 }
 
 /**

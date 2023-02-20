@@ -22,10 +22,15 @@ struct Token {
 extern Token *token;
 
 bool token_consume(char *op);
+
 void token_expect(char *op);
+
 bool token_is_eof();
+
 int token_number_expect();
+
 Token *new_token(TokenKind kind, Token *cur, char *str, int len);
+
 Token *tokenize(char *p);
 
 #endif //NNCC_TOKEN_H

@@ -28,13 +28,13 @@ bool token_consume(char *op) {
 
 void token_expect(char *op) {
     if (!token_consume(op)) {
-        panic("Unexpeced token: expected %s but %.*s", op, token->len, token->str);
+        panic("Unexpected token: expected %s but %.*s", op, token->len, token->str);
     }
 }
 
 int token_number_expect() {
     if (token->kind != TK_NUM) {
-        panic("Unexpeced token: expected {number} but %.*s", token->len, token->str);
+        panic("Unexpected token: expected {number} but %.*s", token->len, token->str);
     }
     int val = token->val;
     token = token->next;

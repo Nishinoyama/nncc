@@ -1,3 +1,6 @@
+#ifndef NNCC_NODE_H
+#define NNCC_NODE_H
+
 #include "token.h"
 #include <stdlib.h>
 
@@ -22,12 +25,22 @@ struct Node {
     int val;
 };
 
-Node* new_node(NodeKind kind, Node *lhs, Node *rhs);
+Node *new_node(NodeKind kind, Node *lhs, Node *rhs);
+
 Node *new_node_num(int val);
+
 Node *expr();
+
 Node *equality();
+
 Node *relation();
+
 Node *add();
+
 Node *mul();
+
 Node *unary();
+
 Node *primary();
+
+#endif //NNCC_NODE_H
