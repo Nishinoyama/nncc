@@ -30,13 +30,23 @@ void *program() {
 /**
  * statement
  * stmt:
- *  expression ";"
- *  "return" expression ";"
+ *  expr";"
+ *  "return" expr ";"
+ *  "if" "(" expr ")" stmt ("else" stmt)?
  */
 Node *stmt() {
     Node *node;
     if (token_type_consume(TK_RETURN)) {
         node = new_node(ND_RETURN, expr(), NULL);
+    } else if (token_type_consume(TK_IF)) {
+        token_expect("(");
+        Node *cond_expr = expr();
+        token_expect(")");
+        Node *true_stmt = stmt();
+        Node *false_stmt = token_type_consume(TK_ELSE) ? stmt() : NULL;
+        Node *stmts = new_node(ND_IF, true_stmt, false_stmt);
+        node = new_node(ND_IF, cond_expr, stmts);
+        return node;
     } else {
         node = expr();
     }

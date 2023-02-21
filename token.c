@@ -94,6 +94,16 @@ Token *tokenize(char *p) {
             p += 6;
             continue;
         }
+        if (exact_keyword(p, "if")) {
+            cur = new_token(TK_IF, cur, p, 2);
+            p += 2;
+            continue;
+        }
+        if (exact_keyword(p, "else")) {
+            cur = new_token(TK_ELSE, cur, p, 4);
+            p += 4;
+            continue;
+        }
         if (start_with(p, ">=") || start_with(p, "<=") ||
             start_with(p, "==") || start_with(p, "!=")) {
             cur = new_token(TK_RESERVED, cur, p, 2);

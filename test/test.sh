@@ -48,6 +48,11 @@ assert 5 "f1 = 1; f2 = 1; f3 = f1 + f2; f4 = f2 + f3; f5 = f3 + f4;"
 assert 42 "people = 1; Answer_to_the_Ultimate_Question_of_Life_the_Universe_and_Everything = 11 * 2 * (people == people) + (10 * (1 + (people < 4)));"
 assert 4 "return 1 + 3;"
 assert 6 "return_modoki = 4; return return_modoki * 2 - 2;"
+assert 2 "a = 2; if (0) a = 3; return a;"
+assert 3 "a = 2; if (1) a = 3; return a;"
+assert 4 "a = 2; if (0) a = 3; else a = 4; return a;"
+assert 3 "a = 2; if (1) a = 3; else a = 4; return a;"
+assert 5 "a = 2; if (0) a = 3; else if (1) a = 5; else a = 4; return a;"
 
 printf "\033[32m[[PRETESTS PASSED]]\033[m\n"
 

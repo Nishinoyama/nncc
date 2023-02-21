@@ -35,7 +35,13 @@ void gen_lval(Node *node) {
     printf("    push rax\n");
 }
 
+int label_number = 0;
+
 void gen_code(Node *node) {
+    if (!node) {
+        printf("    push 0\n");
+        return;
+    }
     if (node->kind == ND_NUM) {
         printf("    push %d\n", node->val);
         return;
@@ -62,6 +68,19 @@ void gen_code(Node *node) {
         printf("    mov rsp, rbp\n");
         printf("    pop rbp\n");
         printf("    ret\n");
+        return;
+    }
+    if (node->kind == ND_IF) {
+        int lbn = label_number++;
+        gen_code(node->lhs);
+        printf("    pop rax\n");
+        printf("    cmp rax, 0\n");
+        printf("    je  .Lelse%03d\n", lbn);
+        gen_code(node->rhs->lhs);
+        printf("    jmp .Lend%03d\n", lbn);
+        printf(".Lelse%03d:\n", 0);
+        gen_code(node->rhs->rhs);
+        printf(".Lend%03d:\n", 0);
         return;
     }
 
