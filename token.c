@@ -19,10 +19,23 @@ bool is_identifier(char c) {
     return is_identifier_non_digit(c) || isdigit(c);
 }
 
+bool exact_keyword(char *p, char *q) {
+    int len = strlen(q);
+    return memcmp(p, q, len) == 0 && !is_identifier(p[6]);
+}
+
 bool token_consume(char *op) {
     if (token->kind == TK_RESERVED &&
         strlen(op) == token->len &&
         memcmp(token->str, op, token->len) == 0) {
+        token = token->next;
+        return true;
+    }
+    return false;
+}
+
+bool token_type_consume(TokenKind kind) {
+    if (token->kind == kind) {
         token = token->next;
         return true;
     }
@@ -74,6 +87,11 @@ Token *tokenize(char *p) {
     while (*p) {
         if (isspace(*p)) {
             p++;
+            continue;
+        }
+        if (exact_keyword(p, "return")) {
+            cur = new_token(TK_RETURN, cur, p, 6);
+            p += 6;
             continue;
         }
         if (start_with(p, ">=") || start_with(p, "<=") ||

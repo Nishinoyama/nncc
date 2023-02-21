@@ -27,8 +27,19 @@ void *program() {
     codes[i] = NULL;
 }
 
+/**
+ * statement
+ * stmt:
+ *  expression ";"
+ *  "return" expression ";"
+ */
 Node *stmt() {
-    Node *node = expr();
+    Node *node;
+    if (token_type_consume(TK_RETURN)) {
+        node = new_node(ND_RETURN, expr(), NULL);
+    } else {
+        node = expr();
+    }
     token_expect(";");
     return node;
 }
