@@ -33,6 +33,7 @@ void *program() {
  *  expr";"
  *  "return" expr ";"
  *  "if" "(" expr ")" stmt ("else" stmt)?
+ *  "while" "(" expr ")" stmt ";"
  */
 Node *stmt() {
     Node *node;
@@ -46,6 +47,12 @@ Node *stmt() {
         Node *false_stmt = token_type_consume(TK_ELSE) ? stmt() : NULL;
         Node *stmts = new_node(ND_IF, true_stmt, false_stmt);
         node = new_node(ND_IF, cond_expr, stmts);
+        return node;
+    } else if (token_type_consume(TK_WHILE)) {
+        token_expect("(");
+        Node *cond_expr = expr();
+        token_expect(")");
+        node = new_node(ND_WHILE, cond_expr, stmt());
         return node;
     } else {
         node = expr();

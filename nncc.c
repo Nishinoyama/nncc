@@ -83,6 +83,18 @@ void gen_code(Node *node) {
         printf(".Lend%03d:\n", lbn);
         return;
     }
+    if (node->kind == ND_WHILE) {
+        int lbn = label_number++;
+        printf(".Lloop_begin%03d:\n", lbn);
+        gen_code(node->lhs);
+        printf("    pop rax\n");
+        printf("    cmp rax, 0\n");
+        printf("    je  .Lloop_end%03d\n", lbn);
+        gen_code(node->rhs);
+        printf("    jmp .Lloop_begin%03d\n", lbn);
+        printf(".Lloop_end%03d:\n", lbn);
+        return;
+    }
 
     gen_code(node->lhs);
     gen_code(node->rhs);

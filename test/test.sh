@@ -53,6 +53,8 @@ assert 3 "a = 2; if (1) a = 3; return a;"
 assert 4 "a = 2; if (0) a = 3; else a = 4; return a;"
 assert 3 "a = 2; if (1) a = 3; else a = 4; return a;"
 assert 5 "a = 2; if (0) a = 3; else if (1) a = 5; else a = 4; return a;"
+assert 10 "a = 4; while (a < 10) a = a + 1; return a;"
+assert 0 "a = 4; while (a) a = a - 1; return a;"
 
 printf "\033[32m[[PRETESTS PASSED]]\033[m\n"
 

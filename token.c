@@ -104,6 +104,11 @@ Token *tokenize(char *p) {
             p += 4;
             continue;
         }
+        if (exact_keyword(p, "while")) {
+            cur = new_token(TK_WHILE, cur, p, 5);
+            p += 5;
+            continue;
+        }
         if (start_with(p, ">=") || start_with(p, "<=") ||
             start_with(p, "==") || start_with(p, "!=")) {
             cur = new_token(TK_RESERVED, cur, p, 2);
