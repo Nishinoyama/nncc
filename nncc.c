@@ -78,9 +78,9 @@ void gen_code(Node *node) {
         printf("    je  .Lelse%03d\n", lbn);
         gen_code(node->rhs->lhs);
         printf("    jmp .Lend%03d\n", lbn);
-        printf(".Lelse%03d:\n", 0);
+        printf(".Lelse%03d:\n", lbn);
         gen_code(node->rhs->rhs);
-        printf(".Lend%03d:\n", 0);
+        printf(".Lend%03d:\n", lbn);
         return;
     }
 
