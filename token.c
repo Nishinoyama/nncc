@@ -21,7 +21,7 @@ bool is_identifier(char c) {
 
 bool exact_keyword(char *p, char *q) {
     int len = strlen(q);
-    return memcmp(p, q, len) == 0 && !is_identifier(p[6]);
+    return memcmp(p, q, len) == 0 && !is_identifier(p[len]);
 }
 
 bool token_consume(char *op) {
